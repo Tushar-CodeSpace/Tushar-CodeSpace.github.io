@@ -4,8 +4,8 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "vite src/index.html",
+    "build": "tsc -b && vite build && cp dist/src/index.html ./index.html && sed -i 's|\\.\\./assets|\\./assets|g' ./index.html && cp -r dist/assets/* ./assets/ && cp -r dist/* . 2>/dev/null || true",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -24,4 +24,3 @@
     "vite": "^6.2.0"
   }
 }
-
