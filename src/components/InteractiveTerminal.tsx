@@ -29,7 +29,8 @@ export const InteractiveTerminal: React.FC = () => {
   ]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [commandHistory, setCommandHistory] = useState<string[]>(['neofetch']);
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const terminalBodyRef = useRef<HTMLDivElement>(null);
+  const isFirstMount = useRef(true);
 
   const suggestedCommands = [
     'help',
@@ -43,7 +44,13 @@ export const InteractiveTerminal: React.FC = () => {
   ];
 
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      return;
+    }
+    if (terminalBodyRef.current) {
+      terminalBodyRef.current.scrollTop = terminalBodyRef.current.scrollHeight;
+    }
   }, [history]);
 
   const handleCommand = (cmdText: string) => {
@@ -259,7 +266,7 @@ export const InteractiveTerminal: React.FC = () => {
           </div>
 
           {/* Terminal Output Body */}
-          <div className="p-4 sm:p-5 max-h-96 min-h-64 overflow-y-auto space-y-4">
+          <div ref={terminalBodyRef} className="p-4 sm:p-5 max-h-96 min-h-64 overflow-y-auto space-y-4">
             {history.map((item, index) => (
               <div key={index} className="space-y-1.5">
                 <div className="flex items-center space-x-2 text-xs">
@@ -282,10 +289,8 @@ export const InteractiveTerminal: React.FC = () => {
                 onKeyDown={handleKeyDown}
                 placeholder="type a command (e.g. help, docker ps, whoami)..."
                 className="flex-1 bg-transparent border-none outline-none text-white font-mono placeholder:text-slate-600 focus:ring-0 text-xs"
-                autoFocus
               />
             </div>
-            <div ref={terminalEndRef} />
           </div>
 
         </div>
