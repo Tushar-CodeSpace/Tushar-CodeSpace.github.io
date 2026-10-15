@@ -9,11 +9,5 @@ export default defineConfig({
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: false,
-    rollupOptions: {
-      input: './src/index.html',
-    },
-  },
-  server: {
-    open: '/src/index.html',
   },
 });
